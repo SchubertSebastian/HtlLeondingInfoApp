@@ -1,52 +1,41 @@
 package at.htl.htlleondinginfoapp
 
-import android.database.DefaultDatabaseErrorHandler
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.renderscript.Script
-import android.util.Log
-import android.widget.LinearLayout
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import at.htl.htlleondinginfoapp.adapter.PostAdapter
 import at.htl.htlleondinginfoapp.databinding.ActivityMainBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.lang.Exception
-import kotlin.math.log
+import at.htl.htlleondinginfoapp.viewmodel.PostViewModel
 
 class MainActivity : AppCompatActivity()
 {
     private val viewModel: PostViewModel by viewModels();
 
-    //TODO: Fragmente erstellen;
-    //TODO: Web View verwenden;
-    //TODO: excerpt eventiuell;
-    //TODO: Detail View;
-    //TODO: Navgraf erstellen;
     //TODO: Aktualiesierungs Menu Punkt
     //     ;)
 
-
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+    }
 
-        val binding = DataBindingUtil
-            .setContentView<ActivityMainBinding>(this, R.layout.activity_main);
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        binding.rvPosts.layoutManager = LinearLayoutManager(this);
-        binding.rvPosts.adapter = PostAdapter(viewModel.posts);
-
-        viewModel.posts.observeForever{
-            binding.rvPosts.adapter?.notifyDataSetChanged();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.refresh -> {
+                viewModel.refresh();
+            }
         }
 
-        viewModel.posts;
-
-
-
-
+        return super.onOptionsItemSelected(item)
     }
 }

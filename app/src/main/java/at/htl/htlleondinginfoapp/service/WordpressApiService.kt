@@ -1,5 +1,6 @@
-package at.htl.htlleondinginfoapp
+package at.htl.htlleondinginfoapp.service
 
+import at.htl.htlleondinginfoapp.model.Post
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -7,7 +8,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-private const val BASE_URL = "https://www.htl-leonding.at/wp-json/wp/v2/";
+//private const val BASE_URL = "https://www.htl-leonding.at/wp-json/wp/v2/";
+private const val BASE_URL = "http://192.168.99.100:8080/wp-json/wp/v2/";
 private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build();
 private val retrofit = Retrofit.Builder().
     addConverterFactory(MoshiConverterFactory.create(moshi)).
@@ -19,7 +21,7 @@ interface WordpressApiService
     // https://htl-leonding.ac.at/wordpress/?rest_route=/wp/v2/posts
     // ?after=2021-02-01T00:00:00
     @GET("posts")
-    suspend fun getPosts(@Query("after") after: String): List<Post>;
+    suspend fun getPosts(@Query("after") after: String, @Query("_embed") embed: String): List<Post>
 
 }
 
